@@ -1,11 +1,17 @@
 import * as _ from 'lodash';
+import { Tabs } from './materialize/tabs';
+import "./style.scss";
+import $ from "jquery";
 
-  function component() {
-    const element = document.createElement('div');
 
-    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+  $(document).ready(function(){
+    var el = document.getElementById("mytabs");
+  
+    Tabs.init(el, {});
+  
+    console.info("loaded...");
+  
+  });
 
-    return element;
-  }
-
-  document.body.appendChild(component());
+  
+  
