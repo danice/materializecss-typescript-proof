@@ -1,34 +1,66 @@
-(function($) {
-    'use strict';
-  
-    let _defaults = {
-      duration: 200, // ms
-      dist: -100, // zoom scale TODO: make this more intuitive as an option
-      shift: 0, // spacing for center image
-      padding: 0, // Padding between non center items
-      numVisible: 5, // Number of visible items in carousel
-      fullWidth: false, // Change to full width styles
-      indicators: false, // Toggle indicators
-      noWrap: false, // Don't wrap around and cycle through items.
-      onCycleTo: null // Callback for when a new slide is cycled to.
-    };
-  
-    /**
-     * @class
-     *
-     */
-    class Carousel extends Component {
-      /**
-       * Construct Carousel instance
-       * @constructor
-       * @param {Element} el
-       * @param {Object} options
-       */
-      constructor(el, options) {
+import { Component } from "./component";
+import $ from "cash-dom";
+import { M } from "./global";
+
+let _defaults = {
+    duration: 200, // ms
+    dist: -100, // zoom scale TODO: make this more intuitive as an option
+    shift: 0, // spacing for center image
+    padding: 0, // Padding between non center items
+    numVisible: 5, // Number of visible items in carousel
+    fullWidth: false, // Change to full width styles
+    indicators: false, // Toggle indicators
+    noWrap: false, // Don't wrap around and cycle through items.
+    onCycleTo: null // Callback for when a new slide is cycled to.
+  };
+
+
+    export class Carousel extends Component {
+        hasMultipleSlides: boolean;
+        showIndicators: boolean;
+        noWrap: any;
+        pressed: boolean;
+        dragged: boolean;
+        offset: number;
+        target: number;
+        images: any[];
+        itemWidth: any;
+        itemHeight: any;
+        dim: number;
+        _autoScrollBound: any;
+        _trackBound: any;
+        $indicators: any;
+        count: number;
+        xform: string;
+        private _handleCarouselTapBound: any;
+        private _handleCarouselDragBound: any;
+        private _handleCarouselReleaseBound: any;
+        private _handleCarouselClickBound: any;
+        _handleIndicatorClickBound: any;
+        _handleThrottledResizeBound: any;
+        verticalDragged: boolean;
+        reference: any;
+        referenceY: any;
+        velocity: number;
+        frame: number;
+        timestamp: number;
+        ticker: NodeJS.Timer;
+        amplitude: number;
+        center: number = 0;
+        imageHeight: any;
+        scrollingTimeout: any;
+        oneTimeCallback: any;
+        /**
+         * Construct Carousel instance
+         * @constructor
+         * @param {Element} el
+         * @param {Object} options
+         */
+        constructor(el: Element, options: Object) {
         super(Carousel, el, options);
-  
-        this.el.M_Carousel = this;
-  
+
+        //this.el.M_Carousel = this;
+
         /**
          * Options for the carousel
          * @member Carousel#options
@@ -78,12 +110,12 @@
         // Iterate through slides
         this.$indicators = $('<ul class="indicators"></ul>');
         this.$el.find('.carousel-item').each((el, i) => {
-          this.images.push(el);
+          this.images.push(i);
           if (this.showIndicators) {
             let $indicator = $('<li class="indicator-item"></li>');
-  
+
             // Add active to first by default.
-            if (i === 0) {
+            if (el === 0) {
               $indicator[0].classList.add('active');
             }
   
@@ -134,7 +166,7 @@
        */
       destroy() {
         this._removeEventHandlers();
-        this.el.M_Carousel = undefined;
+        //this.el.M_Carousel = undefined;
       }
   
       /**
@@ -166,7 +198,7 @@
         }
   
         // Resize
-        let throttledResize = M.throttle(this._handleResize, 200);
+        let throttledResize = M.throttle(this._handleResize, 200, null);
         this._handleThrottledResizeBound = throttledResize.bind(this);
   
         window.addEventListener('resize', this._handleThrottledResizeBound);
@@ -366,7 +398,7 @@
        * Set carousel height based on first slide
        * @param {Booleam} imageOnly - true for image slides
        */
-      _setCarouselHeight(imageOnly) {
+      _setCarouselHeight(imageOnly: boolean = false) {
         let firstSlide = this.$el.find('.carousel-item.active').length
           ? this.$el.find('.carousel-item.active').first()
           : this.$el.find('.carousel-item').first();
@@ -474,7 +506,7 @@
        * Scroll to target
        * @param {Number} x
        */
-      _scroll(x) {
+      _scroll(x: number = 0) {
         // Track scrolling state
         if (!this.$el.hasClass('scrolling')) {
           this.el.classList.add('scrolling');
@@ -601,16 +633,16 @@
           this.oneTimeCallback.call(this, $currItem[0], this.dragged);
           this.oneTimeCallback = null;
         }
-      }
-  
-      /**
-       * Cycle to target
-       * @param {Element} el
-       * @param {Number} opacity
-       * @param {Number} zIndex
-       * @param {String} transform
-       */
-      _updateItemStyle(el, opacity, zIndex, transform) {
+        }
+
+        /**
+         * Cycle to target
+         * @param {Element} el
+         * @param {Number} opacity
+         * @param {Number} zIndex
+         * @param {String} transform
+         */
+        _updateItemStyle(el, opacity, zIndex, transform) {
         el.style[this.xform] = transform;
         el.style.zIndex = zIndex;
         el.style.opacity = opacity;
@@ -622,7 +654,7 @@
        * @param {Number} n
        * @param {Function} callback
        */
-      _cycleTo(n, callback) {
+      _cycleTo(n: number, callback: Function = null) {
         let diff = (this.center % this.count) - n;
   
         // Account for wraparound.
@@ -665,7 +697,7 @@
        * Cycle to next item
        * @param {Number} [n]
        */
-      next(n) {
+      next(n: number = 1) {
         if (n === undefined || isNaN(n)) {
           n = 1;
         }
@@ -685,7 +717,7 @@
        * Cycle to previous item
        * @param {Number} [n]
        */
-      prev(n) {
+      prev(n: number = 1) {
         if (n === undefined || isNaN(n)) {
           n = 1;
         }
@@ -723,11 +755,3 @@
         this._cycleTo(n, callback);
       }
     }
-  
-    M.Carousel = Carousel;
-  
-    if (M.jQueryLoaded) {
-      M.initializeJqueryWrapper(Carousel, 'carousel', 'M_Carousel');
-    }
-  })(cash);
-  

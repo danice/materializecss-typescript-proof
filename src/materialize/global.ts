@@ -28,5 +28,39 @@ export class M {
           FloatingActionButton: root.querySelectorAll('.fixed-action-btn:not(.no-autoinit)')
         };
     }
+
+    public static throttle(func, wait, options) {
+      let context, args, result;
+      let timeout = null;
+      let previous = 0;
+      options || (options = {});
+      let later = function() {
+        previous = options.leading === false ? 0 : this.getTime();
+        timeout = null;
+        result = func.apply(context, args);
+        context = args = null;
+      };
+      return function() {
+        let now = this.getTime();
+        if (!previous && options.leading === false) previous = now;
+        let remaining = wait - (now - previous);
+        context = this;
+        args = arguments;
+        if (remaining <= 0) {
+          clearTimeout(timeout);
+          timeout = null;
+          previous = now;
+          result = func.apply(context, args);
+          context = args = null;
+        } else if (!timeout && options.trailing !== false) {
+          timeout = setTimeout(later, remaining);
+        }
+        return result;
+      };
+    }
+
+    getTime =  Date.now ||  function() {
+      return new Date().getTime();
+    };
 }
 

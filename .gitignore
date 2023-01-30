@@ -1,2 +1,5 @@
 /node_modules
-/dist
+/dist/materialize
+/dist/*.js
+/dist/*.map
+/dist/*.txt
