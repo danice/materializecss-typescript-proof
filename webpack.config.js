@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/materialize/global.ts',
   devtool: 'inline-source-map',
   module: {
     rules: [
@@ -27,7 +27,9 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'bundle.js',
+    filename: 'materialize-css.js',
     path: path.resolve(__dirname, 'dist'),
-  },
+    libraryTarget: 'var',
+    library: 'M'    
+  }
 };

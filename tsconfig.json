@@ -1,15 +1,14 @@
 {    
     "compilerOptions": {
-        "outDir": "./dist/",
+        "outDir": "./dist/",        
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "module": "esnext",
+        "module": "CommonJS",
         "moduleResolution": "node",
         "skipLibCheck": true,
-        "target": "ES2021",
+        "target": "ES6",
         "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "importHelpers": true,
+        "resolveJsonModule": true,        
         "sourceMap": true
       },
       "include": [

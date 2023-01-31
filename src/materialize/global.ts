@@ -1,9 +1,21 @@
-export class M {
+import { Carousel } from './carousel';
+import { Tabs } from './tabs';
+
+module.exports = {
+  Tabs,
+  Carousel
+}
+
+export class M {   
+    Tabs: typeof Tabs = Tabs; 
+    Carousel: typeof Carousel = Carousel; 
+
     static escapeHash(hash) {
         return hash.replace(/(:|\.|\[|\]|,|=|\/)/g, '\\$1');
       }
       
-      AutoInit(context) {
+      
+      AutoInit(context) {        
         // Use document.body if no context is given
         let root = !!context ? context : document.body;
       
@@ -59,8 +71,7 @@ export class M {
       };
     }
 
-    getTime =  Date.now ||  function() {
+    getTime =  function() {
       return new Date().getTime();
     };
 }
-
