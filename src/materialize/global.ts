@@ -1,11 +1,17 @@
+import { Autocomplete } from './autocomplete';
+import { AutoInit } from './autoinit';
 import { Bounding } from './bounding';
 import { Carousel } from './carousel';
+import { Dropdown } from './dropdown';
 import { Edges } from './edges';
 import { Tabs } from './tabs';
 
 module.exports = {
   Tabs,
-  Carousel
+  Carousel,
+  Autocomplete,
+  Dropdown,
+  AutoInit
 }
 
 export class M {   
@@ -18,8 +24,8 @@ export class M {
       ARROW_DOWN: 40
     };
 
-  Tabs: typeof Tabs = Tabs; 
-  Carousel: typeof Carousel = Carousel; 
+  static Tabs: typeof Tabs = Tabs; 
+  static Carousel: typeof Carousel = Carousel; 
     
          
 
@@ -56,6 +62,12 @@ static {
   document.addEventListener('blur', this.docHandleBlur, true);  
 }
 
+static jQueryLoaded(): boolean
+{
+  return !!(<any>window).jQuery;      
+}
+ 
+
 /**
  * Initialize jQuery wrapper for plugin
  * @param {Class} plugin  javascript class
@@ -63,68 +75,38 @@ static {
  * @param {string} classRef  Class reference name
  */
 static initializeJqueryWrapper(plugin, pluginName, classRef) {
-  // jQuery.fn[pluginName] = function(methodOrOptions) {
-  //   // Call plugin method if valid method name is passed in
-  //   if (plugin.prototype[methodOrOptions]) {
-  //     let params = Array.prototype.slice.call(arguments, 1);
+  if (!this.jQueryLoaded())
+    return;
+  var jq = (<any>window).jQuery;
+  
+  jq().fn[pluginName] = function(methodOrOptions) {
+    // Call plugin method if valid method name is passed in
+    if (plugin.prototype[methodOrOptions]) {
+      let params = Array.prototype.slice.call(arguments, 1);
 
-  //     // Getter methods
-  //     if (methodOrOptions.slice(0, 3) === 'get') {
-  //       let instance = this.first()[0][classRef];
-  //       return instance[methodOrOptions].apply(instance, params);
-  //     }
+      // Getter methods
+      if (methodOrOptions.slice(0, 3) === 'get') {
+        let instance = this.first()[0][classRef];
+        return instance[methodOrOptions].apply(instance, params);
+      }
 
-  //     // Void methods
-  //     return this.each(function() {
-  //       let instance = this[classRef];
-  //       instance[methodOrOptions].apply(instance, params);
-  //     });
+      // Void methods
+      return this.each(function() {
+        let instance = this[classRef];
+        instance[methodOrOptions].apply(instance, params);
+      });
 
-  //     // Initialize plugin if options or no argument is passed in
-  //   } else if (typeof methodOrOptions === 'object' || !methodOrOptions) {
-  //     plugin.init(this, arguments[0]);
-  //     return this;
-  //   }
+      // Initialize plugin if options or no argument is passed in
+    } else if (typeof methodOrOptions === 'object' || !methodOrOptions) {
+      plugin.init(this, arguments[0]);
+      return this;
+    }
 
-  //   // Return error if an unrecognized  method name is passed in
-  //   jQuery.error(`Method ${methodOrOptions} does not exist on jQuery.${pluginName}`);
-  // };
-};
-
-/**
- * Automatically initialize components
- * @param {Element} context  DOM Element to search within for components
- */
-static AutoInit = function(context) {
-  // Use document.body if no context is given
-  let root = !!context ? context : document.body;
-
-  let registry = {
-    Autocomplete: root.querySelectorAll('.autocomplete:not(.no-autoinit)'),
-    Carousel: root.querySelectorAll('.carousel:not(.no-autoinit)'),
-    Chips: root.querySelectorAll('.chips:not(.no-autoinit)'),
-    Collapsible: root.querySelectorAll('.collapsible:not(.no-autoinit)'),
-    Datepicker: root.querySelectorAll('.datepicker:not(.no-autoinit)'),
-    Dropdown: root.querySelectorAll('.dropdown-trigger:not(.no-autoinit)'),
-    Materialbox: root.querySelectorAll('.materialboxed:not(.no-autoinit)'),
-    Modal: root.querySelectorAll('.modal:not(.no-autoinit)'),
-    Parallax: root.querySelectorAll('.parallax:not(.no-autoinit)'),
-    Pushpin: root.querySelectorAll('.pushpin:not(.no-autoinit)'),
-    ScrollSpy: root.querySelectorAll('.scrollspy:not(.no-autoinit)'),
-    FormSelect: root.querySelectorAll('select:not(.no-autoinit)'),
-    Sidenav: root.querySelectorAll('.sidenav:not(.no-autoinit)'),
-    Tabs: root.querySelectorAll('.tabs:not(.no-autoinit)'),
-    TapTarget: root.querySelectorAll('.tap-target:not(.no-autoinit)'),
-    Timepicker: root.querySelectorAll('.timepicker:not(.no-autoinit)'),
-    Tooltip: root.querySelectorAll('.tooltipped:not(.no-autoinit)'),
-    FloatingActionButton: root.querySelectorAll('.fixed-action-btn:not(.no-autoinit)')
+    // Return error if an unrecognized  method name is passed in
+    jq.error(`Method ${methodOrOptions} does not exist on jQuery.${pluginName}`);
   };
-
-  for (let pluginName in registry) {
-    let plugin = M[pluginName];
-    plugin.init(registry[pluginName]);
-  }
 };
+
 
 /**
  * Generate approximated selector string for a jQuery object
@@ -371,7 +353,7 @@ static getDocumentScrollLeft():number {
       return new Date().getTime();
     };
 
-     
-
-      
+          
 }
+
+

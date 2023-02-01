@@ -1,6 +1,9 @@
 
   $(document).ready(function(){
+	 M.AutoInit();
+	 /*
     var el = document.getElementById("mytabs");
+  
   
     M.Tabs.init(el, {});
 
@@ -8,6 +11,7 @@
     M.Carousel.init(elem, {
       // specify options here
     });
+	*/
   
     console.info("loaded...");
   
