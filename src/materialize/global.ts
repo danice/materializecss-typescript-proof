@@ -71,7 +71,7 @@ export class M {
       };
     }
 
-    getTime =  function() {
+    getTime(): number {
       return new Date().getTime();
     };
 }

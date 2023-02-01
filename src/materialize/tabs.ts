@@ -1,5 +1,5 @@
 import { Component } from "./component";
-import $ from "jquery";
+import $ from "cash-dom";
 import { M } from "./global";
 import anim from "animejs";
 import { Carousel } from "./carousel";
@@ -154,7 +154,7 @@ export class Tabs extends Component {
 
       // Update the variables with the new link and content
       this.$activeTabLink = tabLink;
-      this.$content = $(M.escapeHash(tabLink[0].hash));
+      this.$content = $(M.escapeHash((<any> tabLink[0]).hash));
       this.$tabLinks = this.$el.children('li.tab').children('a');
 
       // Make the tab active.
