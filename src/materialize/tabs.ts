@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import $ from "cash-dom";
-import { M } from "./global";
+import { Global } from "./global";
 import anim from "animejs";
 import { Carousel } from "./carousel";
 
@@ -154,7 +154,7 @@ export class Tabs extends Component {
 
       // Update the variables with the new link and content
       this.$activeTabLink = tabLink;
-      this.$content = $(M.escapeHash((<any> tabLink[0]).hash));
+      this.$content = $(Global.escapeHash((<any> tabLink[0]).hash));
       this.$tabLinks = this.$el.children('li.tab').children('a');
 
       // Make the tab active.
@@ -239,7 +239,7 @@ export class Tabs extends Component {
       this.index = Math.max(this.$tabLinks.index(this.$activeTabLink), 0);
 
       if (this.$activeTabLink.length) {
-        this.$content = $(M.escapeHash(this.$activeTabLink[0].hash));
+        this.$content = $(Global.escapeHash(this.$activeTabLink[0].hash));
         this.$content.addClass('active');
       }
     }
@@ -255,7 +255,7 @@ export class Tabs extends Component {
 
       let $tabsContent = $();
       this.$tabLinks.each((link) => {
-        let $currContent = $(M.escapeHash(link.hash));
+        let $currContent = $(Global.escapeHash(link.hash));
         $currContent.addClass('carousel-item');
         $tabsContent = $tabsContent.add($currContent);
       });
@@ -307,7 +307,7 @@ export class Tabs extends Component {
       // Hide Tabs Content
       this.$tabLinks.not(this.$activeTabLink).each((link) => {
         if (!!link.hash) {
-          let $currContent = $(M.escapeHash(link.hash));
+          let $currContent = $(Global.escapeHash(link.hash));
           if ($currContent.length) {
             $currContent[0].style.display = 'none';
           }
@@ -322,7 +322,7 @@ export class Tabs extends Component {
       // show Tabs Content
       this.$tabLinks.each((link) => {
         if (!!link.hash) {
-          let $currContent = $(M.escapeHash(link.hash));
+          let $currContent = $(Global.escapeHash(link.hash));
           if ($currContent.length) {
             $currContent[0].style.display = '';
           }

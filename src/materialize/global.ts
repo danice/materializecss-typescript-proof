@@ -14,7 +14,7 @@ module.exports = {
   AutoInit
 }
 
-export class M {   
+export class Global {   
     static version = '1.2.1';
     static keys = {
       TAB: 9,
@@ -35,19 +35,19 @@ export class M {
 static tabPressed:boolean = false;
 static keyDown:boolean = false;
 static docHandleKeydown(e) {
-  M.keyDown = true;
-  if (e.which === M.keys.TAB || e.which === M.keys.ARROW_DOWN || e.which === M.keys.ARROW_UP) {
-    M.tabPressed = true;
+  Global.keyDown = true;
+  if (e.which === Global.keys.TAB || e.which === Global.keys.ARROW_DOWN || e.which === Global.keys.ARROW_UP) {
+    Global.tabPressed = true;
   }
 };
 static docHandleKeyup(e) {
-  M.keyDown = false;
-  if (e.which === M.keys.TAB || e.which === M.keys.ARROW_DOWN || e.which === M.keys.ARROW_UP) {
-    M.tabPressed = false;
+  Global.keyDown = false;
+  if (e.which === Global.keys.TAB || e.which === Global.keys.ARROW_DOWN || e.which === Global.keys.ARROW_UP) {
+    Global.tabPressed = false;
   }
 };
 static docHandleFocus(e) {
-  if (M.keyDown) {
+  if (Global.keyDown) {
     document.body.classList.add('keyboard-focused');
   }
 };

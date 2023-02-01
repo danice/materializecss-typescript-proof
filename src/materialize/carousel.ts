@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import $ from "cash-dom";
-import { M } from "./global";
+import { Global } from "./global";
 
 let _defaults = {
     duration: 200, // ms
@@ -198,7 +198,7 @@ let _defaults = {
         }
   
         // Resize
-        let throttledResize = M.throttle(this._handleResize, 200, null);
+        let throttledResize = Global.throttle(this._handleResize, 200, null);
         this._handleThrottledResizeBound = throttledResize.bind(this);
   
         window.addEventListener('resize', this._handleThrottledResizeBound);

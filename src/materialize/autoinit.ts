@@ -1,4 +1,4 @@
-import { M } from "./global";
+import { Global } from "./global";
 
 
 
@@ -33,8 +33,8 @@ import { M } from "./global";
         //   FloatingActionButton: root.querySelectorAll('.fixed-action-btn:not(.no-autoinit)')
         };
         
-        M.Tabs.init(registry.Tabs, null);
-        M.Carousel.init(registry.Carousel, null);
+        Global.Tabs.init(registry.Tabs, null);
+        Global.Carousel.init(registry.Carousel, null);
       
         // for (let pluginName in registry) {
         //   let plugin = M[pluginName];

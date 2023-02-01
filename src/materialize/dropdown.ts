@@ -1,5 +1,5 @@
 import { Component } from "./component";
-import { M } from "./global";
+import { Global } from "./global";
 import $ from "cash-dom";
 import anim from "animejs";
 
@@ -48,7 +48,7 @@ import anim from "animejs";
       
       Dropdown._dropdowns.push(this);
 
-      this.id = M.getIdFromTrigger(el);
+      this.id = Global.getIdFromTrigger(el);
       this.dropdownEl = document.getElementById(this.id);
       this.$dropdownEl = $(this.dropdownEl);
 
@@ -238,7 +238,7 @@ import anim from "animejs";
 
     _handleTriggerKeydown(e) {
       // ARROW DOWN OR ENTER WHEN SELECT IS CLOSED - open Dropdown
-      if ((e.which === M.keys.ARROW_DOWN || e.which === M.keys.ENTER) && !this.isOpen) {
+      if ((e.which === Global.keys.ARROW_DOWN || e.which === Global.keys.ENTER) && !this.isOpen) {
         e.preventDefault();
         this.open();
       }
@@ -272,14 +272,14 @@ import anim from "animejs";
      * @param {Event} e
      */
     _handleDropdownKeydown(e) {
-      if (e.which === M.keys.TAB) {
+      if (e.which === Global.keys.TAB) {
         e.preventDefault();
         this.close();
 
         // Navigate down dropdown list
-      } else if ((e.which === M.keys.ARROW_DOWN || e.which === M.keys.ARROW_UP) && this.isOpen) {
+      } else if ((e.which === Global.keys.ARROW_DOWN || e.which === Global.keys.ARROW_UP) && this.isOpen) {
         e.preventDefault();
-        let direction = e.which === M.keys.ARROW_DOWN ? 1 : -1;
+        let direction = e.which === Global.keys.ARROW_DOWN ? 1 : -1;
         let newFocusedIndex = this.focusedIndex;
         let foundNewIndex = false;
         do {
@@ -303,7 +303,7 @@ import anim from "animejs";
         }
 
         // ENTER selects choice on focused item
-      } else if (e.which === M.keys.ENTER && this.isOpen) {
+      } else if (e.which === Global.keys.ENTER && this.isOpen) {
         // Search for <a> and <button>
         let focusedElement = this.dropdownEl.children[this.focusedIndex];
         let $activatableElement = $(focusedElement)
@@ -320,7 +320,7 @@ import anim from "animejs";
         }
 
         // Close dropdown on ESC
-      } else if (e.which === M.keys.ESC && this.isOpen) {
+      } else if (e.which === Global.keys.ESC && this.isOpen) {
         e.preventDefault();
         this.close();
       }
@@ -433,7 +433,7 @@ import anim from "animejs";
         width: idealWidth
       };
 
-      let alignments = M.checkPossibleAlignments(
+      let alignments = Global.checkPossibleAlignments(
         this.el,
         closestOverflowParent,
         dropdownBounds,

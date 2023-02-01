@@ -1,5 +1,5 @@
 import { Component } from "./component";
-import { M } from "./global";
+import { Global } from "./global";
 import $ from "cash-dom";
 import { Dropdown } from "./dropdown";
 
@@ -169,7 +169,7 @@ import { Dropdown } from "./dropdown";
      */
     _setupDropdown() {
       this.container = document.createElement('ul');
-      this.container.id = `autocomplete-options-${M.guid()}`;
+      this.container.id = `autocomplete-options-${Global.guid()}`;
       $(this.container).addClass('autocomplete-content dropdown-content');
       this.$inputField.append(this.container);
       this.el.setAttribute('data-target', this.container.id);
@@ -234,7 +234,7 @@ import { Dropdown } from "./dropdown";
 
       // Check if the input isn't empty
       // Check if focus triggered by tab
-      if (this.oldVal !== val && (M.tabPressed || e.type !== 'focus')) {
+      if (this.oldVal !== val && (Global.tabPressed || e.type !== 'focus')) {
         this.open();
       }
 
@@ -255,7 +255,7 @@ import { Dropdown } from "./dropdown";
         numItems = $(this.container).children('li').length;
 
       // select element on Enter
-      if (keyCode === M.keys.ENTER && this.activeIndex >= 0) {
+      if (keyCode === Global.keys.ENTER && this.activeIndex >= 0) {
         liElement = $(this.container)
           .children('li')
           .eq(this.activeIndex);
@@ -267,14 +267,14 @@ import { Dropdown } from "./dropdown";
       }
 
       // Capture up and down key
-      if (keyCode === M.keys.ARROW_UP || keyCode === M.keys.ARROW_DOWN) {
+      if (keyCode === Global.keys.ARROW_UP || keyCode === Global.keys.ARROW_DOWN) {
         e.preventDefault();
 
-        if (keyCode === M.keys.ARROW_UP && this.activeIndex > 0) {
+        if (keyCode === Global.keys.ARROW_UP && this.activeIndex > 0) {
           this.activeIndex--;
         }
 
-        if (keyCode === M.keys.ARROW_DOWN && this.activeIndex < numItems - 1) {
+        if (keyCode === Global.keys.ARROW_DOWN && this.activeIndex < numItems - 1) {
           this.activeIndex++;
         }
 
