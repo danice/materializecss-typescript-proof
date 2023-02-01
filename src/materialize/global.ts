@@ -26,6 +26,8 @@ export class Global {
 
   static Tabs: typeof Tabs = Tabs; 
   static Carousel: typeof Carousel = Carousel; 
+  static Autocomplete: typeof Autocomplete = Autocomplete; 
+  static Dropdown: typeof Dropdown = Dropdown;
     
          
 
@@ -60,6 +62,11 @@ static {
   document.addEventListener('keyup', this.docHandleKeyup, true);
   document.addEventListener('focus', this.docHandleFocus, true);
   document.addEventListener('blur', this.docHandleBlur, true);  
+  this.initializeJqueryWrapper(Tabs, 'tabs', 'M_Tabs');  
+  this.initializeJqueryWrapper(Carousel, 'carousel', 'M_Carousel');
+  this.initializeJqueryWrapper(Autocomplete, 'autocomplete', 'M_Autocomplete');
+  this.initializeJqueryWrapper(Dropdown, 'dropdown', 'M_Dropdown');
+
 }
 
 static jQueryLoaded(): boolean
@@ -79,7 +86,7 @@ static initializeJqueryWrapper(plugin, pluginName, classRef) {
     return;
   var jq = (<any>window).jQuery;
   
-  jq().fn[pluginName] = function(methodOrOptions) {
+  jq.fn[pluginName] = function(methodOrOptions) {
     // Call plugin method if valid method name is passed in
     if (plugin.prototype[methodOrOptions]) {
       let params = Array.prototype.slice.call(arguments, 1);
@@ -331,7 +338,7 @@ static getDocumentScrollLeft():number {
         context = args = null;
       };
       return function() {
-        let now = this.getTime();
+        let now = new Date().getTime();;
         if (!previous && options.leading === false) previous = now;
         let remaining = wait - (now - previous);
         context = this;
