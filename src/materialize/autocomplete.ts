@@ -1,5 +1,7 @@
-(function($) {
-  'use strict';
+import { Component } from "./component";
+import { M } from "./global";
+import $ from "cash-dom";
+import { Dropdown } from "./dropdown";
 
   let _defaults = {
     data: {}, // Autocomplete data set
@@ -23,7 +25,23 @@
    * @class
    *
    */
-  class Autocomplete extends Component {
+  export class Autocomplete extends Component {
+    private isOpen: boolean;
+    private count: number;
+    private activeIndex: number;
+    private oldVal: any;
+    private $inputField: any;
+    private $active: any;
+    private _mousedown: boolean;
+    private _handleInputBlurBound: any;
+    private _handleInputKeyupAndFocusBound: any;
+    private _handleInputKeydownBound: any;
+    private _handleInputClickBound: any;
+    private _handleContainerMousedownAndTouchstartBound: any;
+    private _handleContainerMouseupAndTouchendBound: any;
+    container: any;
+    dropdown: any;
+    static _keydown: boolean;
     /**
      * Construct Autocomplete instance
      * @constructor
@@ -31,9 +49,7 @@
      * @param {Object} options
      */
     constructor(el, options) {
-      super(Autocomplete, el, options);
-
-      this.el.M_Autocomplete = this;
+      super(Autocomplete, el, options);      
 
       /**
        * Options for the autocomplete
@@ -83,8 +99,7 @@
      */
     destroy() {
       this._removeEventHandlers();
-      this._removeDropdown();
-      this.el.M_Autocomplete = undefined;
+      this._removeDropdown();      
     }
 
     /**
@@ -177,7 +192,7 @@
         }
       };
 
-      this.dropdown = M.Dropdown.init(this.el, dropdownOptions);
+      this.dropdown = Dropdown.init(this.el, dropdownOptions);
 
       // Sketchy removal of dropdown click handler
       this.el.removeEventListener('click', this.dropdown._handleClickBound);
@@ -209,8 +224,8 @@
         Autocomplete._keydown = false;
       }
 
-      this.count = 0;
-      let val = this.el.value.toLowerCase();
+      this.count = 0;      
+      let val = (this.el as HTMLInputElement).value.toLowerCase();
 
       // Don't capture enter or arrow key usage.
       if (e.keyCode === 13 || e.keyCode === 38 || e.keyCode === 40) {
@@ -342,7 +357,7 @@
      */
     selectOption(el) {
       let text = el.text().trim();
-      this.el.value = text;
+      (this.el as HTMLInputElement).value = text;
       this.$el.trigger('change');
       this._resetAutocomplete();
       this.close();
@@ -426,7 +441,7 @@
      * Open Autocomplete Dropdown
      */
     open() {
-      let val = this.el.value.toLowerCase();
+      let val = (this.el as HTMLInputElement).value.toLowerCase();
 
       this._resetAutocomplete();
 
@@ -456,7 +471,7 @@
      * @param {Object} data
      */
     updateData(data) {
-      let val = this.el.value.toLowerCase();
+      let val = (this.el as HTMLInputElement).value.toLowerCase();
       this.options.data = data;
 
       if (this.isOpen) {
@@ -464,16 +479,3 @@
       }
     }
   }
-
-  /**
-   * @static
-   * @memberof Autocomplete
-   */
-  Autocomplete._keydown = false;
-
-  M.Autocomplete = Autocomplete;
-
-  if (M.jQueryLoaded) {
-    M.initializeJqueryWrapper(Autocomplete, 'autocomplete', 'M_Autocomplete');
-  }
-})(cash);
