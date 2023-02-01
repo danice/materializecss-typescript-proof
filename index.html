@@ -7,6 +7,8 @@
   <body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.2.1/dist/css/materialize.min.css">    
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="dist/materialize.js"></script>    
     <script src="index.js"></script>    
 
@@ -25,6 +27,19 @@
       <div id="test4" class="col s12" style="display: none">Test 4</div>
     </div>
 
+    
+  <div class="row">
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">textsms</i>
+          <input type="text" id="autocomplete-input" class="autocomplete">
+          <label for="autocomplete-input">Autocomplete</label>
+        </div>
+      </div>
+    </div>
+  </div>          
+
     <div id="carousel" class="carousel">
       <a class="carousel-item" href="#one!"
         ><img src="images/placeholder/250x250_a.png"
@@ -42,5 +57,7 @@
         ><img src="images/placeholder/250x250_e.png"
       /></a>
     </div>
+	
+	
   </body>
 </html>
