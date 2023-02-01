@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: './src/materialize/global.ts',
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {
