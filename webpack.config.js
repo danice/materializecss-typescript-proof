@@ -27,7 +27,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'materialize-css.js',
+    filename: 'materialize.js',
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'var',
     library: 'M'    
